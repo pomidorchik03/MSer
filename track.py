@@ -29,16 +29,24 @@ def track_search(track_name, limit=10): #функция для поиска тр
 
     print(f"Если вашего трека нет в списке, измените или дополните запрос")
 
-    print("Хотите получить информацию об определенном треке?(1 - всю информацию кроме текста, 2 - только текст, 3 - нет)") #По идее это убрать надо будет, пользователь зачем трек ищет если не для информации
+    print("Хотите получить информацию об определенном треке?(1 - да, 2 - нет)") #По идее это убрать надо будет, пользователь зачем трек ищет если не для информации
     hochy = int(input())
     if(hochy == 1):
         print("Выберите трек")
-        choice = int(input())
+        choice = int(input())   
         track_id = tracks[choice - 1]['id']
-        track_info(track_id)
-    elif(hochy == 2):
-        song = genius.search_song(results)
-        print(song.lyrics)
+        
+        print("Хотите получить 1 - информацию кроме текста песни или 2 - только текст песни")
+        vibor = int(input())
+        if(vibor == 1):
+            
+            track_info(track_id)
+        elif(vibor == 2):
+            track = sp.track(track_id)
+            name = track['name']
+            print(genius.search_song(name).lyrics)
+        else:
+            print("Дурак?")
     else:
         return
 
