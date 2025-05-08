@@ -1,5 +1,5 @@
 from spotify_client import sp
-
+from genius_client import *
 
 def convert_ms_to_time(ms):
     seconds = ms // 1000 
@@ -29,13 +29,16 @@ def track_search(track_name, limit=10): #функция для поиска тр
 
     print(f"Если вашего трека нет в списке, измените или дополните запрос")
 
-    print("Хотите получить информацию об определенном треке?(1 - да, 2 - нет)") #По идее это убрать надо будет, пользователь зачем трек ищет если не для информации
+    print("Хотите получить информацию об определенном треке?(1 - всю информацию кроме текста, 2 - только текст, 3 - нет)") #По идее это убрать надо будет, пользователь зачем трек ищет если не для информации
     hochy = int(input())
     if(hochy == 1):
         print("Выберите трек")
         choice = int(input())
         track_id = tracks[choice - 1]['id']
         track_info(track_id)
+    elif(hochy == 2):
+        song = genius.search_song(results)
+        print(song.lyrics)
     else:
         return
 
@@ -51,7 +54,7 @@ def track_info(track_id): #функция для инфы по треку
     album_release_date = track['album']['release_date']
     duration = convert_ms_to_time(track['duration_ms'])
     popularity = track['popularity']
-
+    
     print(f"Название трека: {track_name}")
     print(f"Исполнители: {artists}")
     print(f"Альбом: {album_name}")
