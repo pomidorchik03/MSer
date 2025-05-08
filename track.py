@@ -29,18 +29,18 @@ def track_search(track_name, limit=10): #функция для поиска тр
 
     print(f"Если вашего трека нет в списке, измените или дополните запрос")
 
-    print("Хотите получить информацию об определенном треке?(1 - да, 2 - нет)")
+    print("Хотите получить информацию об определенном треке?(1 - да, 2 - нет)") #По идее это убрать надо будет, пользователь зачем трек ищет если не для информации
     hochy = int(input())
     if(hochy == 1):
         print("Выберите трек")
-        choose = int(input())
-        track_id = tracks[choose - 1]['id']
+        choice = int(input())
+        track_id = tracks[choice - 1]['id']
         track_info(track_id)
     else:
         return
 
     
-def track_info(track_id):
+def track_info(track_id): #функция для инфы по треку
 
     track = sp.track(track_id)
 
