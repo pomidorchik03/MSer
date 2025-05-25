@@ -104,12 +104,22 @@ async def show_lyrics(callback: types.CallbackQuery):
     
     try:
         name = track['name']
-        artist = track['artists']
-        lyrics = genius.search_song(name, artist).lyrics
-        await callback.message.answer(f"📝 {track['name']}:\n\n{lyrics[:3000]}...")
+        artist_name = track['artists'][0]['name'] if track['artists'] else "Unknown"
+        
+        song = genius.search_song(name, artist_name)
+        if not song or not song.lyrics:
+            return await callback.message.answer("😕 Текст не найден")
+        
+        lyrics = song.lyrics.split('[', 1)
+        cleaned_lyrics = ('[' + lyrics[1] if len(lyrics) > 1 else lyrics[0]).strip()
+        
+        await callback.message.answer(
+            f"📝 {name}:\n\n{cleaned_lyrics[:3000]}...",
+            parse_mode="HTML"
+        )
+        
     except:
-        await callback.message.answer("😕 Текст не найден")
-    
+        await callback.message.answer("⚠️ Ошибка при получении текста")    
     await callback.answer()
 
 async def main():
