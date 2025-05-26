@@ -7,7 +7,6 @@ import json
 
 def check_news():
     filename_fans = "fans.json"
-    # check_and_create_json(filename_fans)
     with open(filename_fans, "r", encoding="utf-8") as file:
 
         data = json.load(file)
