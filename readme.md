@@ -11,7 +11,7 @@
 ## 🛠 Установка
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/pomidorchik03/MusicSucker
+   git clone https://github.com/pomidorchik03/MSer
 2. Установите пакеты:
    ```bash
    pip install -r requirements.txt
