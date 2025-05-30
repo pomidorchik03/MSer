@@ -1,4 +1,4 @@
-# 🎵 Music Bot for Telegram
+# 🎵 Music Supporter Bot for Telegram
 
 Бот для поиска треков, текстов песен и новинок музыки через Spotify и Genius API.
 
@@ -27,11 +27,11 @@
 ## ⚙️Настройка API
 1. Получите Ваш SPOTIFY_CLIENT_ID и SPOTIFY_CLIENT_SECRET:
    ```bash
-   Зарегистрируйтесь на [Spotify for Developers](https://developer.spotify.com)
+   Зарегистрируйтесь на Spotify for Developers (https://developer.spotify.com)
    Создайте приложение и получите CLIENT_ID и CLIENT_SECRET
 2. Получите Ваш GENIUS_ACCESS_TOKEN:
    ```bash
-   Зарегестрируйтесь на [docs.genius](https://docs.genius.com)
+   Зарегестрируйтесь на docs.genius (https://docs.genius.com)
    Получите Ваш токен
 
 ## 🔊Запуск
