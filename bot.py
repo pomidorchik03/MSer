@@ -2,7 +2,7 @@ from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from config import TELEGRAM_TOKEN
+from config import TELEGRAM_TOKEN, CHANELL_TOKEN
 import asyncio
 from track import track_search, convert_ms_to_time
 from keyboards import tracks_keyboard, info_type_keyboard
@@ -122,9 +122,21 @@ async def show_lyrics(callback: types.CallbackQuery):
         await callback.message.answer("⚠️ Ошибка при получении текста")    
     await callback.answer()
 
+LAST_CHANNEL_POST = None
+
+@dp.channel_post()
+async def handle_channel_post(post: types.Message):
+    global LAST_CHANNEL_POST
+    LAST_CHANNEL_POST = post
+
+@dp.message(F.text == "📆 Новые релизы")
+async def show_latest_release(message: types.Message):
+    global LAST_CHANNEL_POST
+    await LAST_CHANNEL_POST.copy_to(chat_id=message.chat.id)
+
 async def main():
     await dp.start_polling(bot)
-    print("Бот включен")
+
 
 if __name__ == "__main__":
     asyncio.run(main())
