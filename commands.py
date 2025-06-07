@@ -13,9 +13,12 @@ def get_main_keyboard():
     builder = ReplyKeyboardBuilder()
     builder.row(
         types.KeyboardButton(text="🎵 Поиск треков"),
-        types.KeyboardButton(text="🎙️ Поиск исполнителей"),
+        types.KeyboardButton(text="🎙️ Поиск исполнителей")
     )
-    builder.row(types.KeyboardButton(text="📆 Новые релизы"))
+    builder.row(
+        types.KeyboardButton(text="📆 Новые релизы"),
+        types.KeyboardButton(text="❓ Справка")
+    )
     return builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
 
 @router.message(Command("remove"))
@@ -76,14 +79,48 @@ async def add_favorites_handler(message: types.Message):
         name = name.strip()
         artist_id = await find_artist_by_name(name)
         if artist_id:
-            added_artists.append(name)
             add_favorites(user_id, [artist_id])
+            added_artists.append(name)
+            
     
     if added_artists:
         await message.answer(f"✅ Добавлены: {', '.join(added_artists)}")
     else:
         await message.answer("❌ Ничего не добавлено")
-
+        
 @router.message(Command("start"))
 async def start(message: types.Message):
-    await message.answer("Выберите действие:", reply_markup=get_main_keyboard())
+    await message.answer(
+        "🎵 Добро пожаловать в музыкального бота!\n\n"
+        "Доступные команды:\n"
+        "/favorites [артист 1, артист 2] — добавить любимых артистов\n"
+        "/myfavorites — посмотреть список избранных артистов\n"
+        "/remove [артист 1, артист 2] — удалить артиста из избранного\n"
+        "/help — показать все команды\n\n"
+        "Кнопки ниже позволяют:\n"
+        "🎵 Поиск треков\n"
+        "🎙️ Поиск исполнителей\n"
+        "📆 Новые релизы — смотреть артистов с новыми альбомами\n"
+        "❓ Справка — показывает список команд\n",
+        reply_markup=get_main_keyboard()
+    )        
+
+@router.message(Command("help"))
+async def show_help(message: types.Message):
+    await message.answer(
+        "📚 Список доступных команд:\n\n"
+        "/start — перезапуск бота\n"
+        "/favorites [артист 1, артист 2] — добавить артистов в избранное\n"
+        "/myfavorites — посмотреть своих любимых артистов\n"
+        "/remove [артист 1, артист 2] — удалить артистов из избранного\n"
+        "/help — показать это сообщение\n\n"
+        "Кнопки:\n"
+        "🎵 Поиск треков — ищет песни\n"
+        "🎙️ Поиск исполнителей — ищет артистов\n"
+        "📆 Новые релизы — показывает артистов с новыми альбомами\n"
+        "❓ Справка — показывает список команд"
+    )
+    
+@router.message(lambda m: m.text == "❓ Справка")
+async def show_help_button(message: types.Message):
+    await show_help(message)

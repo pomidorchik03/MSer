@@ -3,10 +3,11 @@ from aiogram.fsm.context import FSMContext
 from spotify import get_track_info, get_artist_info, get_artist_albums, get_album_tracks
 from genius import get_lyrics
 from tracks_list import info_type_keyboard
-from artists import albums_keyboard, album_tracks_keyboard, artist_keyboard
+from artists import albums_keyboard, album_tracks_keyboard
 from helpers import convert_ms_to_time
 from background import check_for_new_releases
-from fan_management import remove_favorite, load_fans_data, clear_news_for_user
+from fan_management import remove_favorite
+from commands import show_help
 
 
 
@@ -112,4 +113,9 @@ async def remove_favorite_callback(callback: types.CallbackQuery):
     else:
         await callback.message.answer("❌ Артист не найден в избранном")
     
+    await callback.answer()
+    
+@router.callback_query(lambda c: c.data == "show_help")
+async def show_help_callback(callback: types.CallbackQuery):
+    await show_help(callback.message)
     await callback.answer()

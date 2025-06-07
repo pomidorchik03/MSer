@@ -9,7 +9,10 @@ def get_main_keyboard():
         types.KeyboardButton(text="🎵 Поиск треков"),
         types.KeyboardButton(text="🎙️ Поиск исполнителей")
     )
-    builder.row(types.KeyboardButton(text="📆 Новые релизы"))
+    builder.row(
+        types.KeyboardButton(text="📆 Новые релизы"),
+        types.KeyboardButton(text="❓ Справка")
+    )
     return builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
 
 def artist_keyboard(artists):
