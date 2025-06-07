@@ -6,21 +6,15 @@ def tracks_keyboard(tracks: List[dict]) -> InlineKeyboardBuilder:
     """Клавиатура с найденными треками"""
     builder = InlineKeyboardBuilder()
     for track in tracks:
-            button_text = (
-                f"{track['name'][:15]} - " 
-                f"{track['artists'][:15]} "
-                f"({track['duration']})"
-            )
-            
-            builder.add(InlineKeyboardButton(
-                text=button_text,
-                callback_data=f"track_{track['id']}"
-            ))
-        
-    builder.adjust(1)  
+        button_text = f"{track['name'][:15]} - {track['artists'][:15]} ({track['duration']})"
+        builder.add(InlineKeyboardButton(
+            text=button_text,
+            callback_data=f"track_{track['id']}"
+        ))
+    builder.adjust(1)
     return builder
 
-def info_type_keyboard(track_id: str) -> InlineKeyboardBuilder:
+def info_type_keyboard(track_id: str):
     """Клавиатура выбора типа информации"""
     builder = InlineKeyboardBuilder()
     builder.add(
