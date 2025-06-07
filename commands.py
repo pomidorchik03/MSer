@@ -5,7 +5,7 @@ from spotify import find_artist_by_name
 from fan_management import add_favorites, remove_favorite, load_fans_data, clear_news_for_user
 from spotify import sp, get_artist_info
 from artists import artist_keyboard
-
+from config import CHANELL_TOKEN
 
 router = Router()
 
@@ -124,3 +124,22 @@ async def show_help(message: types.Message):
 @router.message(lambda m: m.text == "❓ Справка")
 async def show_help_button(message: types.Message):
     await show_help(message)
+    
+LAST_CHANNEL_POST = None
+
+@router.channel_post()
+async def handle_channel_post(post: types.Message):
+    global LAST_CHANNEL_POST
+    LAST_CHANNEL_POST = post
+
+@router.message(lambda m: m.text == "📆 Новые релизы")
+async def show_latest_release(message: types.Message):
+    global LAST_CHANNEL_POST
+    try:
+        if LAST_CHANNEL_POST:
+            await LAST_CHANNEL_POST.copy_to(chat_id=message.chat.id)
+        else:
+            await message.answer("❌ Новых постов пока нет")
+    except Exception as e:
+        print(f"Ошибка копирования поста: {e}")
+        await message.answer("⚠️ Произошла ошибка")
