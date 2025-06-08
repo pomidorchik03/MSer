@@ -1,7 +1,7 @@
 from aiogram import Router, types
 from aiogram.fsm.context import FSMContext
 from spotify import get_track_info, get_artist_info, get_artist_albums, get_album_tracks
-from genius import get_lyrics
+from genius import get_lyrics_safe
 from tracks_list import info_type_keyboard
 from artists import albums_keyboard, album_tracks_keyboard
 from helpers import convert_ms_to_time
@@ -48,7 +48,12 @@ async def show_lyrics(callback: types.CallbackQuery):
         name = track["name"]
         artist_name = track["artists"][0]["name"] if track["artists"] else "Unknown"
 
-        lyrics = await get_lyrics(name, artist_name)
+        lyrics = get_lyrics_safe(name, artist_name)
+        try:
+            lyrics = lyrics.split(f"Contributors",1)[1].lstrip()
+        except:
+            lyrics = lyrics.split(f"Contributor",1)[1].lstrip()
+        
         if not lyrics:
             return await callback.message.answer("😕 Текст не найден")
 
@@ -56,6 +61,7 @@ async def show_lyrics(callback: types.CallbackQuery):
             f"📝 {name}:\n\n{lyrics[:3000]}...", parse_mode="HTML"
         )
     except Exception as e:
+        print(e)
         await callback.message.answer("⚠️ Ошибка при получении текста")
     await callback.answer()
 

@@ -62,7 +62,7 @@ async def show_favorites(message: types.Message):
         return
 
     await message.answer(
-        "🆕 Артисты со свежими релизами:",
+        "🆕 Отслеживаемые артисты:",
         reply_markup=artist_keyboard(artists)
     )
     
