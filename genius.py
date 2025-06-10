@@ -1,5 +1,5 @@
 import lyricsgenius
-from config import GENIUS_ACCESS_TOKEN
+from config import GENIUS_ACCESS_TOKEN, PROXIES
 import time
 import requests
 from bs4 import BeautifulSoup
@@ -9,10 +9,7 @@ from urllib.parse import quote_plus
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
 }
-PROXIES = {
-    "http": "http://jyxajamo:7whc774mrs6f@207.244.217.165:6712",
-    "https": "http://jyxajamo:7whc774mrs6f@207.244.217.165:6712",
-}
+
 
 # Инициализация сессии с User-Agent и прокси
 session = requests.Session()

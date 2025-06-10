@@ -8,7 +8,6 @@ from helpers import convert_ms_to_time
 from background import check_for_new_releases
 from fan_management import remove_favorite
 from commands import show_help
-import re
 
 
 router = Router()
