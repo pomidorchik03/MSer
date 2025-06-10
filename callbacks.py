@@ -8,7 +8,7 @@ from helpers import convert_ms_to_time
 from background import check_for_new_releases
 from fan_management import remove_favorite
 from commands import show_help
-
+import re
 
 
 router = Router()
@@ -49,16 +49,12 @@ async def show_lyrics(callback: types.CallbackQuery):
         artist_name = track["artists"][0]["name"] if track["artists"] else "Unknown"
 
         lyrics = get_lyrics_safe(name, artist_name)
-        try:
-            lyrics = lyrics.split(f"Contributors",1)[1].lstrip()
-        except:
-            lyrics = lyrics.split(f"Contributor",1)[1].lstrip()
-        
+    
         if not lyrics:
             return await callback.message.answer("😕 Текст не найден")
 
         await callback.message.answer(
-            f"📝 {name}:\n\n{lyrics[:3000]}...", parse_mode="HTML"
+            f"📝 {name}:\n\n{lyrics[:3000]}", parse_mode="HTML"
         )
     except Exception as e:
         print(e)
