@@ -23,6 +23,10 @@
     SPOTIFY_CLIENT_SECRET = "ваш_spotify_secret"
     GENIUS_ACCESS_TOKEN = "ваш_токен_genius"
     CHANNELL_TOKEN = "Токен_ТГ_канала_с_новыми_релизами"
+    PROXIES = {
+        "http": "http://USERNAME:PASSWORD@IP:PORT",
+        "https": "http://USERNAME:PASSWORD@IP:PORT"
+    }
 
 ## ⚙️Настройка API
 1. Получите Ваш SPOTIFY_CLIENT_ID и SPOTIFY_CLIENT_SECRET:
