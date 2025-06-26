@@ -66,7 +66,7 @@ async def show_favorites(message: types.Message):
         reply_markup=artist_keyboard(artists)
     )
     
-    # Очистка уведомлений после просмотра
+    
     clear_news_for_user(user_id)
 
 @router.message(Command("favorites"))

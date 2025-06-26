@@ -8,11 +8,13 @@ router = Router()
 
 @router.message(lambda m: m.text == "🎵 Поиск треков")
 async def search_tracks_handler(message: types.Message, state: FSMContext):
+    '''Обработчик текстового ввода (🎵 Поиск треков)'''
     await message.answer("🔍 Введите название трека или отрывок этого трека:")
     await state.set_state(TrackSearch.waiting_query)
 
 @router.message(TrackSearch.waiting_query)
 async def process_track_query(message: types.Message, state: FSMContext):
+    '''Вывод результата'''
     tracks = await search_tracks(message.text)
     
     if not tracks:

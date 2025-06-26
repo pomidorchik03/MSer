@@ -6,6 +6,7 @@ from spotify import sp, get_last_release
 
 
 async def check_for_new_releases(bot: Bot):
+    '''Проверка выхода новых релизов'''
     while True:
         try:
             data = load_fans_data()

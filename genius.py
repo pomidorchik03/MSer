@@ -5,26 +5,26 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
 
-# Настройки для обхода блокировок
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
 }
 
 
-# Инициализация сессии с User-Agent и прокси
+
 session = requests.Session()
 session.headers.update(HEADERS)
 if PROXIES:
     session.proxies.update(PROXIES)
 
-# Инициализация Genius с кастомной сессией
+
 genius = lyricsgenius.Genius(
     GENIUS_ACCESS_TOKEN, user_agent=session, timeout=15, retries=3
 )
 
 
 def get_lyrics_from_url(url: str):
-    """Парсит текст песни по ссылке из Genius"""
+    """Парсинг текста песни по ссылке из Genius"""
     try:
         print("Парсим")
         response = session.get(url, timeout=10)
@@ -51,7 +51,7 @@ def get_lyrics_from_url(url: str):
 
 
 def get_lyrics_direct(song_name: str, artist_name: str):
-    """Резервный метод: парсинг текста с сайта Genius"""
+    """Парсинг текста с сайта Genius"""
     try:
         # Поиск ссылки через Google
         query = quote_plus(f"{song_name} {artist_name} site:genius.com")
@@ -59,7 +59,7 @@ def get_lyrics_direct(song_name: str, artist_name: str):
         response = session.get(search_url)
         soup = BeautifulSoup(response.text, "html.parser")
 
-        # Извлечение ссылки на песню
+        
         genius_link = None
         for link in soup.find_all("a"):
             href = link.get("href")
@@ -71,7 +71,7 @@ def get_lyrics_direct(song_name: str, artist_name: str):
             print(f"[Парсинг] Ссылка не найдена для {song_name} — {artist_name}")
             return None
 
-        # Парсинг текста песни
+        
         song_response = session.get(genius_link)
         song_soup = BeautifulSoup(song_response.text, "html.parser")
         lyrics_div = song_soup.find("div", {"data-lyrics-container": "true"})
@@ -85,7 +85,7 @@ def get_lyrics_direct(song_name: str, artist_name: str):
 
 
 def get_lyrics_ovh(song_name: str, artist_name: str):
-    """Альтернативный API: lyrics.ovh"""
+    """Парсинг с lyrics.ovh"""
     try:
         url = f"https://api.lyrics.ovh/v1/{quote_plus(artist_name)}/{quote_plus(song_name)}"
         response = session.get(url, timeout=10)
@@ -100,11 +100,9 @@ def get_lyrics_ovh(song_name: str, artist_name: str):
 
 
 def get_lyrics_safe(song_name: str, artist_name: str):
-    """
-    Возвращает текст песни через Genius API с резервными методами
-    """
+    '''Возвращает текст песни через Genius API с резервными методами'''
     try:
-        time.sleep(3)  # Защита от частых запросов
+        time.sleep(3)  
         search_query = f"{song_name} {artist_name}"
         results = genius.search_songs(search_query)
 
@@ -112,7 +110,7 @@ def get_lyrics_safe(song_name: str, artist_name: str):
             print(f"❌ Ничего не найдено по запросу: {search_query}")
             return None
 
-        # Поиск точного совпадения
+        
         for hit in results["hits"]:
             song_data = hit["result"]
             if (
@@ -129,7 +127,7 @@ def get_lyrics_safe(song_name: str, artist_name: str):
                     print(full_song["lyrics"].strip())
                     return full_song["lyrics"].strip()
 
-                # Если текста нет, но есть URL — парсим его
+              
 
                 elif full_song and url:
                     print("📎 Текст не найден напрямую, пробую парсинг по ссылке")
@@ -142,13 +140,13 @@ def get_lyrics_safe(song_name: str, artist_name: str):
 
         print("⚠️ Текст не найден через Genius API, пробую резервные методы...")
 
-        # Резервный метод 1: Парсинг сайта Genius
+        
         direct_lyrics = get_lyrics_direct(song_name, artist_name)
         if direct_lyrics:
             print("✅ Текст найден через парсинг Genius")
             return direct_lyrics
 
-        # Резервный метод 2: Использование lyrics.ovh
+        
         ovh_lyrics = get_lyrics_ovh(song_name, artist_name)
         if ovh_lyrics:
             print("✅ Текст найден через lyrics.ovh")

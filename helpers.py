@@ -1,4 +1,5 @@
 def convert_ms_to_time(ms: int) -> str:
+    '''Перевод времени'''
     seconds = ms // 1000
     hours, seconds = divmod(seconds, 3600)
     minutes, seconds = divmod(seconds, 60)

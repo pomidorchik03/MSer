@@ -3,15 +3,15 @@ from aiogram import Bot, Dispatcher
 from config import TELEGRAM_TOKEN
 from background import check_for_new_releases
 
-# Инициализация клиента Spotify
+
 from spotify import init_spotify
 sp = init_spotify()
 
-# Инициализация бота
+
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher()
 
-# Регистрация роутеров
+
 from commands import router as commands_router
 from track_search import router as track_search_router
 from artist_search import router as artist_search_router
@@ -22,7 +22,7 @@ dp.include_router(track_search_router)
 dp.include_router(artist_search_router)
 dp.include_router(callbacks_router)
 
-# Запуск фоновой задачи
+
 async def run_background_check(bot):
     await check_for_new_releases(bot)
 

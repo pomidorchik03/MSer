@@ -13,9 +13,10 @@ from commands import show_help
 router = Router()
 
 
-# --- Треки ---
+
 @router.callback_query(lambda c: c.data.startswith("track_"))
 async def process_track_choice(callback: types.CallbackQuery, state: FSMContext):
+    '''Клавиатура с выбором информации и текстом'''
     track_id = callback.data.split("_")[-1]
     await callback.message.answer(
         "📌 Выберите тип информации:",
@@ -26,6 +27,7 @@ async def process_track_choice(callback: types.CallbackQuery, state: FSMContext)
 
 @router.callback_query(lambda c: c.data.startswith("info_"))
 async def show_track_info(callback: types.CallbackQuery):
+    '''Информация о треке'''
     track_id = callback.data.split("_")[1]
     track = await get_track_info(track_id)
 
@@ -40,6 +42,7 @@ async def show_track_info(callback: types.CallbackQuery):
 
 @router.callback_query(lambda c: c.data.startswith("lyrics_"))
 async def show_lyrics(callback: types.CallbackQuery):
+    '''Текст трека'''
     track_id = callback.data.split("_")[1]
     track = await get_track_info(track_id)
 
@@ -60,9 +63,10 @@ async def show_lyrics(callback: types.CallbackQuery):
         await callback.message.answer("⚠️ Ошибка при получении текста")
     await callback.answer()
 
-# --- Артисты ---
+
 @router.callback_query(lambda c: c.data.startswith("artist_"))
 async def show_artist_info(callback: types.CallbackQuery):
+    '''Информация о артисте'''
     artist_id = callback.data.split("_")[1]
     artist = await get_artist_info(artist_id)
 
@@ -82,9 +86,10 @@ async def show_artist_info(callback: types.CallbackQuery):
         )
     await callback.answer()
 
-# --- Альбомы ---
+
 @router.callback_query(lambda c: c.data.startswith("album_"))
 async def show_album_tracks(callback: types.CallbackQuery):
+    '''Содержание трека'''
     album_id = callback.data.split("_")[1]
     album_tracks = await get_album_tracks(album_id)
 
@@ -106,6 +111,7 @@ async def manual_check(callback: types.CallbackQuery):
     
 @router.callback_query(lambda c: c.data.startswith("remove_"))
 async def remove_favorite_callback(callback: types.CallbackQuery):
+    '''Удаление подписки'''
     artist_id = callback.data.split("_")[1]
     user_id = str(callback.from_user.id)
     
@@ -118,5 +124,6 @@ async def remove_favorite_callback(callback: types.CallbackQuery):
     
 @router.callback_query(lambda c: c.data == "show_help")
 async def show_help_callback(callback: types.CallbackQuery):
+    '''Подсказка'''
     await show_help(callback.message)
     await callback.answer()

@@ -4,6 +4,7 @@ from spotify import get_artist_info
 
 
 def get_main_keyboard():
+    '''Главная клавиатура'''
     builder = ReplyKeyboardBuilder()
     builder.row(
         types.KeyboardButton(text="🎵 Поиск треков"),
@@ -16,6 +17,7 @@ def get_main_keyboard():
     return builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
 
 def artist_keyboard(artists):
+    '''Клавиатура с артистами'''
     builder = InlineKeyboardBuilder()
     for idx, artist in enumerate(artists[:10], 1):
         builder.add(types.InlineKeyboardButton(
@@ -26,6 +28,7 @@ def artist_keyboard(artists):
     return builder.as_markup()
 
 def favorites_keyboard(favorites: dict):
+    '''Клавиатура с подписками'''
     builder = InlineKeyboardBuilder()
     for artist_id in favorites:
         try:
@@ -40,6 +43,7 @@ def favorites_keyboard(favorites: dict):
     return builder.as_markup()
 
 def albums_keyboard(albums):
+    '''Клавиатура с альбомами'''
     builder = InlineKeyboardBuilder()
     for album in albums:
         release_year = album['release_date'][:4] if album['release_date'] else 'не указана'
@@ -51,6 +55,7 @@ def albums_keyboard(albums):
     return builder.as_markup()
 
 def album_tracks_keyboard(tracks):
+    '''Клавиатура с треками в альбоме'''
     builder = InlineKeyboardBuilder()
     for idx, track in enumerate(tracks, 1):
         builder.add(types.InlineKeyboardButton(

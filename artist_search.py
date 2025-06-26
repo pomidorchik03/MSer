@@ -8,11 +8,13 @@ router = Router()
 
 @router.message(lambda m: m.text == "🎙️ Поиск исполнителей")
 async def search_artists_handler(message: types.Message, state: FSMContext):
+    '''Обработчик текстового ввода(🎙️ Поиск исполнителей)'''
     await message.answer("🔍 Введите имя исполнителя:")
     await state.set_state(ArtistSearch.waiting_query)
 
 @router.message(ArtistSearch.waiting_query)
 async def process_artist_query(message: types.Message, state: FSMContext):
+    '''Вывод результата'''
     artists = await artist_search(message.text)
     
     if not artists:
